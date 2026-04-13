@@ -274,6 +274,12 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
             case .accountProvisioningLink:
                 handleAppRoute(route,
                                windowType: windowType)
+            case .oidcCallback(let url):
+                if stateMachine.state == .softLogout {
+                    softLogoutCoordinator?.handleOIDCRedirectURL(url)
+                } else {
+                    authenticationFlowCoordinator?.handleOIDCRedirectURL(url)
+                }
             case .genericCallLink(let url):
                 if let userSessionFlowCoordinator {
                     userSessionFlowCoordinator.handleAppRoute(route, animated: true)
