@@ -39,8 +39,6 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         case serverConfirmationScreen
         /// The screen to choose a different server.
         case serverSelectionScreen
-        /// The web authentication session is being presented.
-        case oidcAuthentication
         /// The screen to login with a password.
         case loginScreen
         
@@ -75,10 +73,6 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         /// The user is no longer selecting a server.
         case dismissedServerSelection
         
-        /// Show the web authentication session for OIDC (using the parameters in the `userInfo`).
-        case continueWithOIDC
-        /// The web authentication session was aborted.
-        case cancelledOIDCAuthentication(previousState: State)
         /// Show the screen to login with password (with the optional login hint in the `userInfo`).
         case continueWithPassword
         /// The password login was aborted.
@@ -145,6 +139,8 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
     }
     
     func clearRoute(animated: Bool) {
+        oidcPresenter?.cancel() // Handle ongoing OIDC authentication first.
+        
         switch stateMachine.state {
         case .initial, .startScreen:
             break
@@ -155,9 +151,6 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
             navigationStackCoordinator.popToRoot(animated: animated)
         case .serverSelectionScreen:
             navigationStackCoordinator.setSheetCoordinator(nil)
-            navigationStackCoordinator.popToRoot(animated: animated)
-        case .oidcAuthentication:
-            oidcPresenter?.cancel()
             navigationStackCoordinator.popToRoot(animated: animated)
         case .loginScreen:
             navigationStackCoordinator.popToRoot(animated: animated)
@@ -215,16 +208,6 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         }
         stateMachine.addRoutes(event: .dismissedServerSelection, transitions: [.serverSelectionScreen => .serverConfirmationScreen])
         
-        stateMachine.addRoutes(event: .continueWithOIDC, transitions: [.serverConfirmationScreen => .oidcAuthentication,
-                                                                       .startScreen => .oidcAuthentication]) { [weak self] context in
-            guard let (oidcData, window) = context.userInfo as? (OIDCAuthorizationDataProxy, UIWindow) else {
-                fatalError("Missing the OIDC data and presentation anchor.")
-            }
-            self?.showOIDCAuthentication(oidcData: oidcData, presentationAnchor: window, fromState: context.fromState)
-        }
-        stateMachine.addRoutes(event: .cancelledOIDCAuthentication(previousState: .serverConfirmationScreen), transitions: [.oidcAuthentication => .serverConfirmationScreen])
-        stateMachine.addRoutes(event: .cancelledOIDCAuthentication(previousState: .startScreen), transitions: [.oidcAuthentication => .startScreen])
-        
         stateMachine.addRoutes(event: .continueWithPassword, transitions: [.serverConfirmationScreen => .loginScreen,
                                                                            .startScreen => .loginScreen]) { [weak self] context in
             let loginHint = context.userInfo as? String
@@ -243,7 +226,8 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         // Completion
         
         stateMachine.addRoutes(event: .signedIn, transitions: [.qrCodeLoginScreen => .complete,
-                                                               .oidcAuthentication => .complete,
+                                                               .serverConfirmationScreen => .complete, // OIDC authentication
+                                                               .startScreen => .complete, // Direct OIDC authentication
                                                                .loginScreen => .complete]) { [weak self] context in
             guard let userSession = context.userInfo as? UserSessionProtocol else { fatalError("The user session wasn't included in the context") }
             self?.userHasSignedIn(userSession: userSession)
@@ -298,7 +282,7 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
                     stateMachine.tryEvent(.reportProblem)
                     
                 case .loginDirectlyWithOIDC(let oidcData, let window):
-                    stateMachine.tryEvent(.continueWithOIDC, userInfo: (oidcData, window))
+                    showOIDCAuthentication(oidcData: oidcData, presentationAnchor: window)
                 case .loginDirectlyWithPassword(let loginHint):
                     stateMachine.tryEvent(.continueWithPassword, userInfo: loginHint)
                 }
@@ -367,7 +351,7 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
             
             switch action {
             case .continueWithOIDC(let oidcData, let window):
-                stateMachine.tryEvent(.continueWithOIDC, userInfo: (oidcData, window))
+                showOIDCAuthentication(oidcData: oidcData, presentationAnchor: window)
             case .continueWithPassword:
                 stateMachine.tryEvent(.continueWithPassword)
             case .changeServer:
@@ -409,7 +393,10 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         }
     }
     
-    private func showOIDCAuthentication(oidcData: OIDCAuthorizationDataProxy, presentationAnchor: UIWindow, fromState: State) {
+    /// **Note:** We have intentionally excluded this presentation from the state machine as it doesn't mutate our navigation stack and there
+    /// isn't a robust way to detect why the user returned to the app when the MAS URL directly opens an external app for authentication without
+    /// presenting a web authentication session.
+    private func showOIDCAuthentication(oidcData: OIDCAuthorizationDataProxy, presentationAnchor: UIWindow) {
         let presenter = OIDCAuthenticationPresenter(authenticationService: authenticationService,
                                                     oidcRedirectURL: appSettings.oidcRedirectURL,
                                                     presentationAnchor: presentationAnchor,
@@ -422,8 +409,7 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
             case .success(let userSession):
                 stateMachine.tryEvent(.signedIn, userInfo: userSession)
             case .failure:
-                stateMachine.tryEvent(.cancelledOIDCAuthentication(previousState: fromState))
-                // Nothing more to do, the alerts are handled by the presenter.
+                break // Nothing to do, any alerts will be handled by the presenter.
             }
             oidcPresenter = nil
         }
