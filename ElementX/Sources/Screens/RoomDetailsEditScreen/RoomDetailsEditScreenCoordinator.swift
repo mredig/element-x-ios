@@ -51,7 +51,11 @@ final class RoomDetailsEditScreenCoordinator: CoordinatorProtocol {
                 case .displayCameraPicker:
                     self?.displayMediaPickerWithMode(.init(source: .camera, selectionType: .single))
                 case .displayMediaPicker:
-                    self?.displayMediaPickerWithMode(.init(source: .photoLibrary, selectionType: .single))
+                    if ProcessInfo.processInfo.isiOSAppOnMac { // Don't bother with the Photos.app on the Mac
+                        self?.displayMediaPickerWithMode(.init(source: .documents(types: [.image]), selectionType: .single))
+                    } else {
+                        self?.displayMediaPickerWithMode(.init(source: .photoLibrary, selectionType: .single))
+                    }
                 }
             }
             .store(in: &cancellables)
