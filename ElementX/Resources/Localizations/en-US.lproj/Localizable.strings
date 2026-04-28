@@ -204,7 +204,9 @@
 "common_beta" = "Beta";
 "common_blocked_users" = "Blocked users";
 "common_bubbles" = "Bubbles";
+"common_call_declined" = "Call declined";
 "common_call_started" = "Call started";
+"common_call_you_declined" = "You declined a call";
 "common_chat_backup" = "Chat backup";
 "common_copied_to_clipboard" = "Copied to clipboard";
 "common_copyright" = "Copyright";
