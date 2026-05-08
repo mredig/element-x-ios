@@ -257,7 +257,7 @@ struct RoomScreen_Previews: PreviewProvider, TestablePreview {
                                                       powerLevelsConfiguration: .init(canUserSendMessage: canSendMessage)))
         let roomViewModel = RoomScreenViewModel.mock(roomProxyMock: roomProxyMock)
 
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         let timelineViewModel = TimelineViewModel(roomProxy: roomProxyMock,

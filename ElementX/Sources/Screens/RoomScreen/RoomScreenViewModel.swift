@@ -457,7 +457,7 @@ extension RoomScreenViewModel {
     static func mock(roomProxyMock: JoinedRoomProxyMock,
                      clientProxyMock: ClientProxyMock = ClientProxyMock(.init()),
                      appHooks: AppHooks = AppHooks()) -> RoomScreenViewModel {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         return RoomScreenViewModel(userSession: UserSessionMock(.init(clientProxy: clientProxyMock)),

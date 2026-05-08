@@ -90,7 +90,7 @@ struct HighlightedTimelineItemTimeline_Previews: PreviewProvider {
     static let focussedEventID = "RoomTimelineItemFixtures.default.5"
     static let composerViewModel = ComposerToolbarViewModel.mock()
     static let timelineViewModel = {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         return TimelineViewModel(roomProxy: roomProxyMock,

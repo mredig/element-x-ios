@@ -158,7 +158,7 @@ struct LoginScreen_Previews: PreviewProvider, TestablePreview {
         
         Task { await authenticationService.configure(for: homeserverAddress, flow: .login) }
         
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         
         let viewModel = LoginScreenViewModel(authenticationService: authenticationService,

@@ -67,7 +67,7 @@ struct CreateRoomSpaceSelectionSheet_Previews: PreviewProvider, TestablePreview 
         clientProxy.spaceService = SpaceServiceProxyMock(.init(editableSpaces: .mockJoinedSpaces2))
         let userSession = UserSessionMock(.init(clientProxy: clientProxy))
 
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         return CreateRoomScreenViewModel(isSpace: false,

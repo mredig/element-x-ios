@@ -16,6 +16,6 @@ extension AnalyticsService {
             client = mockClient
         }
         
-        return .init(client: client, appSettings: settings ?? AppSettings())
+        return .init(client: client, appSettings: settings ?? AppSettings(store: UserDefaultsMock()))
     }
 }

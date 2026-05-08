@@ -222,7 +222,7 @@ struct HomeScreen_Previews: PreviewProvider, TestablePreview {
         
         let userSession = UserSessionMock(.init(clientProxy: clientProxy))
 
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         return HomeScreenViewModel(userSession: userSession,

@@ -126,7 +126,7 @@ struct SpaceSettingsScreen_Previews: PreviewProvider, TestablePreview {
     static let userViewModel = makeViewModel(members: .allMembers)
     
     static func makeViewModel(members: [RoomMemberProxyMock]) -> RoomDetailsScreenViewModel {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         
         return RoomDetailsScreenViewModel(roomProxy: JoinedRoomProxyMock(.init(name: "Space",

@@ -820,7 +820,7 @@ extension ComposerToolbarViewModel {
             roomProxy.identityStatusChangesPublisher = .init([.init(userId: RoomMemberProxyMock.mockAlice.userID, changedTo: .verificationViolation)])
         }
 
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         let wysiwygViewModel = WysiwygComposerViewModel()

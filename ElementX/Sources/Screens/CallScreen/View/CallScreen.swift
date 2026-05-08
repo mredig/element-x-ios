@@ -364,7 +364,7 @@ struct CallScreen_Previews: PreviewProvider {
         
         roomProxy.elementCallWidgetDriverDeviceIDReturnValue = widgetDriver
 
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         return CallScreenViewModel(elementCallService: ElementCallServiceMock(.init()),

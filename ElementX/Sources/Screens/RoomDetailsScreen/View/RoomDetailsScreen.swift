@@ -406,7 +406,7 @@ struct RoomDetailsScreen_Previews: PreviewProvider, TestablePreview {
         
         let notificationSettingsProxy = NotificationSettingsProxyMock(with: notificationSettingsProxyMockConfiguration)
 
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         return .init(roomProxy: roomProxy,
@@ -437,7 +437,7 @@ struct RoomDetailsScreen_Previews: PreviewProvider, TestablePreview {
         
         let notificationSettingsProxy = NotificationSettingsProxyMock(with: .init())
 
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         return .init(roomProxy: roomProxy,
@@ -478,7 +478,7 @@ struct RoomDetailsScreen_Previews: PreviewProvider, TestablePreview {
         
         let notificationSettingsProxy = NotificationSettingsProxyMock(with: .init())
 
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
 
         return .init(roomProxy: roomProxy,

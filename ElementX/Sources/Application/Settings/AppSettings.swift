@@ -119,7 +119,6 @@ final class AppSettings {
         store.removeObject(forKey: UserDefaultsKeys.hasRunIdentityConfirmationOnboarding.rawValue)
     }
     
-    
     // MARK: - Hooks
     
     // swiftlint:disable:next function_parameter_count
