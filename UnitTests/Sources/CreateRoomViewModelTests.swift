@@ -27,12 +27,11 @@ final class CreateRoomScreenViewModelTests {
     }
 
     init() {
-        appSettings = AppSettings()
+        appSettings = AppSettings(store: UserDefaultsMock())
         analytics = .mock(settings: appSettings)
     }
 
     deinit {
-        AppSettings.resetAllSettings()
         viewModel = nil
         clientProxy = nil
         spaceService = nil

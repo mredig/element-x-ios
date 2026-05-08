@@ -27,14 +27,9 @@ final class HomeScreenViewModelTests {
     var cancellables = Set<AnyCancellable>()
     
     init() {
-        AppSettings.resetAllSettings()
-        appSettings = AppSettings()
+        appSettings = AppSettings(store: UserDefaultsMock())
         analytics = .mock(settings: appSettings)
         userIndicatorController = UserIndicatorControllerMock.default
-    }
-    
-    deinit {
-        AppSettings.resetAllSettings()
     }
     
     @Test

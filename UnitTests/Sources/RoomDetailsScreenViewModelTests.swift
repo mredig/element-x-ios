@@ -25,9 +25,9 @@ struct RoomDetailsScreenViewModelTests {
     var cancellables = Set<AnyCancellable>()
     
     init() {
-        AppSettings.resetAllSettings()
-        let appSettings = AppSettings()
-        let analytics = AnalyticsService.mock(settings: appSettings)
+        appSettings = AppSettings(store: UserDefaultsMock())
+        analytics = .mock(settings: appSettings)
+        userIndicatorController = UserIndicatorControllerMock.default
         
         cancellables.removeAll()
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test"))
