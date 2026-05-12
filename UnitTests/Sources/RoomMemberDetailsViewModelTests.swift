@@ -206,7 +206,7 @@ struct RoomMemberDetailsViewModelTests {
             .success(roomMemberProxyMock)
         }
         
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         
         // swiftlint:disable:next force_unwrapping

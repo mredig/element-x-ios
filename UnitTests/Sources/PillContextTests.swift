@@ -15,7 +15,7 @@ import Testing
 struct PillContextTests {
     @Test
     func user() async {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -50,7 +50,7 @@ struct PillContextTests {
     
     @Test
     func ownUser() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -76,7 +76,7 @@ struct PillContextTests {
     
     @Test
     func allUsers() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -105,7 +105,7 @@ struct PillContextTests {
     
     @Test
     func roomIDMention() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -134,7 +134,7 @@ struct PillContextTests {
     
     @Test
     func roomIDMentionMissingRoom() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -161,7 +161,7 @@ struct PillContextTests {
     
     @Test
     func roomAliasMention() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -192,7 +192,7 @@ struct PillContextTests {
     
     @Test
     func roomAliasMentionMissingRoom() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -219,7 +219,7 @@ struct PillContextTests {
     
     @Test
     func eventOnRoomIDMention() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -248,7 +248,7 @@ struct PillContextTests {
     
     @Test
     func eventOnRoomIDMentionMissingRoom() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -275,7 +275,7 @@ struct PillContextTests {
     
     @Test
     func eventOnRoomAliasMention() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -306,7 +306,7 @@ struct PillContextTests {
     
     @Test
     func eventOnRoomAliasMentionMissingRoom() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 

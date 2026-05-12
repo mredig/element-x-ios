@@ -25,9 +25,7 @@ struct RoomDetailsScreenViewModelTests {
     var cancellables = Set<AnyCancellable>()
     
     init() {
-        appSettings = AppSettings(store: UserDefaultsMock())
-        analytics = .mock(settings: appSettings)
-        userIndicatorController = UserIndicatorControllerMock.default
+        let appSettings = AppSettings(store: UserDefaultsMock())
         
         cancellables.removeAll()
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test"))
@@ -43,7 +41,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func leaveRoomTappedWhenPublic() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let mockedMembers: [RoomMemberProxyMock] = [.mockBob, .mockAlice]
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test", members: mockedMembers, joinRule: .public))
         viewModel = RoomDetailsScreenViewModel(roomProxy: roomProxyMock,
@@ -64,7 +62,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func leaveRoomTappedWhenRoomNotPublic() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedMembers: [RoomMemberProxyMock] = [.mockBob, .mockAlice]
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test", members: mockedMembers))
@@ -87,7 +85,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func leaveRoomTappedWithLessThanTwoMembers() {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedMembers: [RoomMemberProxyMock] = [.mockAlice]
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test", members: mockedMembers))
@@ -146,7 +144,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func initialDMDetailsState() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let recipient = RoomMemberProxyMock.mockDan
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, recipient]
@@ -168,7 +166,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func ignoreSuccess() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let recipient = RoomMemberProxyMock.mockDan
         
@@ -200,7 +198,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func ignoreFailure() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let recipient = RoomMemberProxyMock.mockDan
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, recipient]
@@ -234,7 +232,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func unignoreSuccess() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let recipient = RoomMemberProxyMock.mockIgnored
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, recipient]
@@ -265,7 +263,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func unignoreFailure() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let recipient = RoomMemberProxyMock.mockIgnored
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, recipient]
@@ -299,7 +297,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func cannotInvitePeople() async {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, .mockAlice]
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test",
@@ -321,7 +319,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func invitePeople() async {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, .mockBob, .mockAlice]
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test", members: mockedMembers, joinRule: .public))
@@ -356,7 +354,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func canEditAvatar() async {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, .mockBob, .mockAlice]
         
@@ -397,7 +395,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func canEditName() async {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, .mockBob, .mockAlice]
         
@@ -438,7 +436,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func canEditTopic() async {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, .mockBob, .mockAlice]
         
@@ -479,7 +477,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func cannotEditRoom() async {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, .mockBob, .mockAlice]
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test", isDirect: false, members: mockedMembers))
@@ -501,7 +499,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func cannotEditDirectRoom() async {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedMembers: [RoomMemberProxyMock] = [.mockMeAdmin, .mockBob, .mockAlice]
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test", isDirect: true, members: mockedMembers))
@@ -522,7 +520,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func notificationLoadingSettingsFailure() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         notificationSettingsProxyMock.getNotificationSettingsRoomIdIsEncryptedIsOneToOneThrowableError = NotificationSettingsError.Generic(msg: "error")
         viewModel = RoomDetailsScreenViewModel(roomProxy: roomProxyMock,
@@ -731,7 +729,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func knockRequestsCounter() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedRequests: [KnockRequestProxyMock] = [.init(), .init()]
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test", isDirect: false, knockRequestsState: .loaded(mockedRequests), joinRule: .knock))
@@ -755,7 +753,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func knockRequestsCounterIsLoading() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test", isDirect: false, knockRequestsState: .loading, joinRule: .knock))
         viewModel = RoomDetailsScreenViewModel(roomProxy: roomProxyMock,
@@ -775,7 +773,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func knockRequestsCounterIsNotShownIfNoPermissions() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedRequests: [KnockRequestProxyMock] = [.init(), .init()]
         roomProxyMock = JoinedRoomProxyMock(.init(name: "Test",
@@ -803,7 +801,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func knockRequestsCounterIsNotShownIfDM() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let mockedRequests: [KnockRequestProxyMock] = [.init(), .init()]
         let mockedMembers: [RoomMemberProxyMock] = [.mockMe, .mockAlice]
@@ -830,7 +828,7 @@ struct RoomDetailsScreenViewModelTests {
     
     @Test
     mutating func historySharingPillDisplayed() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
 
         let configuration = JoinedRoomProxyMockConfiguration(historyVisibility: .shared)
         let infoSubject = CurrentValueSubject<RoomInfoProxyProtocol, Never>(RoomInfoProxyMock(configuration))

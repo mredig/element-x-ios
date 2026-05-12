@@ -13,7 +13,7 @@ import Testing
 struct UserProfileScreenViewModelTests {
     @Test
     func initialState() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -39,7 +39,7 @@ struct UserProfileScreenViewModelTests {
     
     @Test
     func initialStateAccountOwner() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
@@ -65,7 +65,7 @@ struct UserProfileScreenViewModelTests {
     
     @Test
     func startingDmWithUnknownUserFetchesIdentity() async throws {
-        let appSettings = AppSettings()
+        let appSettings = AppSettings(store: UserDefaultsMock())
         let analytics = AnalyticsService.mock(settings: appSettings)
         let userIndicatorController = UserIndicatorControllerMock.default
 
